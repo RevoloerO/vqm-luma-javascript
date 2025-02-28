@@ -1,0 +1,48 @@
+{
+    "JavaScript": {
+      "Basics": {
+        "Variables": ["var", "let", "const"],
+        "Data Types": ["String", "Number", "Boolean", "Undefined", "Null", "Symbol", "BigInt"],
+        "Operators": {
+          "Arithmetic": ["+", "-", "*", "/", "%", "**"],
+          "Comparison": ["==", "===", "!=", "!==", ">", "<", ">=", "<="],
+          "Logical": ["&&", "||", "!"],
+          "Ternary": "condition ? expr1 : expr2"
+        }
+      },
+      "Core Concepts": {
+        "Functions": ["Function Declarations", "Function Expressions", "Arrow Functions"],
+        "Scope": ["Global", "Function", "Block"],
+        "Closures": "Functions retaining access to outer scope variables",
+        "this": "Execution context-based reference"
+      },
+      "Asynchronous JavaScript": {
+        "Callbacks": "Function passed as an argument to another function",
+        "Promises": "Object representing future value",
+        "Async/Await": "Simplified asynchronous code syntax"
+      },
+      "Advanced Topics": {
+        "OOP": ["Prototypes", "Classes", "Inheritance"],
+        "Functional Programming": ["Pure Functions", "Higher-Order Functions", "Immutability"]
+      },
+      "Best Practices": {
+        "Optimization": ["Use const/let", "Avoid redundant loops", "Use template literals"],
+        "Memory Management": "Garbage Collection, Dereferencing unused objects"
+      },
+      "Web Development": {
+        "DOM Manipulation": "document.querySelector, addEventListener",
+        "Web APIs": "Fetch API, Local Storage, IndexedDB",
+        "Event Loop": "Handles async operations in JavaScript"
+      },
+      "Ecosystem & Frameworks": {
+        "Frontend": ["React.js", "Vue.js", "Angular"],
+        "Backend": ["Node.js", "Express.js", "NestJS", "Deno"]
+      },
+      "Interview Questions": [
+        "Explain event delegation",
+        "Difference between == and ===?",
+        "What are closures?",
+        "How does JavaScript handle asynchronous operations?"
+      ]
+    }
+  }
