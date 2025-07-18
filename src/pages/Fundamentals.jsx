@@ -17,7 +17,7 @@ export default function Fundamentals() {
     return (
         <div className="topic-page-container">
             <aside className="topic-sidebar">
-                <button className="back-button" onClick={() => navigate('/vqm-luma-javascript')}>
+                <button className="back-button" onClick={() => navigate('/vqm-luma-javascript/')}>
                     <i className="fas fa-arrow-left"></i> Back to Home
                 </button>
                 <h2>Fundamentals</h2>
