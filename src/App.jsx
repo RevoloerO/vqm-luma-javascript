@@ -7,7 +7,7 @@ import Exercises from './pages/Exercises';
 import './App.css'; // Import global styles and themes
 
 export default function App() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
 
   // This effect will apply the theme to the document's body element
   useEffect(() => {

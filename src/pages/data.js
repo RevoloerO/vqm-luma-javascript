@@ -31,10 +31,26 @@ export const lumaData = {
       mindMap: {
         center: 'Programming',
         nodes: [
-          { title: 'The Act', keyword: 'Instruction' },
-          { title: 'The Tool', keyword: 'Computer (Literal)' },
-          { title: 'The Plan', keyword: 'Algorithm (Sequence)' },
-          { title: 'The Rules', keyword: 'Syntax (Grammar)' },
+          { 
+            title: 'The Act', 
+            keyword: 'Instruction',
+            description: 'The core of programming is telling a computer what to do, one precise step at a time.'
+          },
+          { 
+            title: 'The Tool', 
+            keyword: 'Computer (Literal)',
+            description: 'A computer does exactly what it is told. It cannot infer meaning or handle ambiguity.'
+          },
+          { 
+            title: 'The Plan', 
+            keyword: 'Algorithm (Sequence)',
+            description: 'A step-by-step plan for solving a problem. The order of instructions is crucial.'
+          },
+          { 
+            title: 'The Rules', 
+            keyword: 'Syntax (Grammar)',
+            description: 'The specific grammar of a programming language that the computer can understand.'
+          },
         ]
       }
     },

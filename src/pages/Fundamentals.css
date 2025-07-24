@@ -51,7 +51,7 @@
     border: 1px solid var(--border-color);
 }
 
-/* NEW: Styles for the header within the content area */
+/* Styles for the header within the content area */
 .topic-header {
     display: flex;
     justify-content: space-between;
@@ -67,7 +67,7 @@
     border: none;
 }
 
-/* NEW: Styles for the view toggle buttons */
+/* Styles for the view toggle buttons */
 .view-toggle {
     display: flex;
     gap: 0.5rem;
@@ -151,12 +151,31 @@
     white-space: pre-wrap;
 }
 
-/* NEW: Mind Map Styles */
+/* NEW: Keyframe animations for a more elegant effect */
+@keyframes elegantFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Mind Map Styles - Updated for Elegance */
 .mind-map-view {
     position: relative;
     width: 100%;
-    height: 450px;
+    height: 500px;
     margin: 2rem 0;
+    font-family: 'Inter', sans-serif;
 }
 
 .mind-map-svg {
@@ -168,42 +187,131 @@
     z-index: 1;
 }
 
+.mind-map-svg line {
+    stroke: #E9D8FD;
+    stroke-width: 2px;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    /* NEW: Smoother line drawing animation */
+    animation: drawLine 1.5s 0.3s ease-in-out forwards;
+}
+
 .mind-map-center-node {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--accent-color);
+    background: #7F56D9;
     color: white;
-    padding: 1.5rem 2.5rem;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    font-weight: bold;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.4rem;
+    font-weight: 600;
     z-index: 3;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    border: 3px solid var(--bg-secondary);
+    box-shadow: 0 4px 12px rgba(127, 86, 217, 0.3);
+    border: none;
+    /* NEW: Elegant entry animation */
+    opacity: 0;
+    animation: elegantFadeIn 0.7s 0.1s ease-out forwards;
 }
 
 .mind-map-node {
     position: absolute;
-    background-color: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    padding: 1rem;
-    border-radius: 12px;
-    text-align: center;
-    width: 180px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    background-color: var(--bg-secondary);
+    border: 1px solid #f0e8ff;
+    border-radius: 16px;
+    width: 220px;
+    box-shadow: 0 8px 24px rgba(149, 157, 165, 0.15);
     z-index: 2;
-    transform: translate(-50%, -50%);
+    /* NEW: Refined transition for hover effects */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    text-align: center;
+    /* NEW: Prepare for elegant entry animation */
+    opacity: 0;
+    animation: elegantFadeIn 0.7s ease-out forwards;
+}
+
+/* NEW: Revised staggered animation delays for a smoother sequence */
+.mind-map-node:nth-of-type(1) { animation-delay: 0.4s; }
+.mind-map-node:nth-of-type(2) { animation-delay: 0.6s; }
+.mind-map-node:nth-of-type(3) { animation-delay: 0.8s; }
+.mind-map-node:nth-of-type(4) { animation-delay: 1.0s; }
+
+/* NEW: More subtle hover effect (lift) */
+.mind-map-node:hover {
+    transform: translate(-50%, -52%);
+    box-shadow: 0 12px 28px rgba(149, 157, 165, 0.2);
+}
+
+.node-content {
+    width: 100%;
 }
 
 .mind-map-node .node-title {
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
 }
 
-.mind-map-node .node-keyword {
-    font-size: 1.1rem;
-    font-weight: bold;
+.mind-map-node .node-keyword code {
+    background-color: #F3E8FF;
+    color: #7F56D9;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.node-description-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, margin-top 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    width: 100%;
+    opacity: 0;
+}
+
+.mind-map-node.expanded .node-description-container {
+    max-height: 120px;
+    margin-top: 1rem;
+    opacity: 1;
+}
+
+.node-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid #E9D8FD;
+}
+
+.node-toggle-button {
+    background-color: #7F56D9;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.node-toggle-button:hover {
+    transform: translateX(-50%) scale(1.1);
+    background-color: #6941C6;
 }
