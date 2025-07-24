@@ -1,6 +1,44 @@
 export const lumaData = {
   fundamentals: [
     {
+      id: 'giving-commands',
+      title: 'Giving Computers Commands',
+      icon: 'fa-terminal',
+      content: `
+        <h4>Core Concept: Programming is Precise Communication</h4>
+        <p>This is the fundamental logic, from the main idea to the details.</p>
+        
+        <h5>1. PROGRAMMING</h5>
+        <p><strong>Keyword:</strong> <code>Instruction</code></p>
+        <p>The act of giving a computer a set of precise instructions.</p>
+        <hr>
+
+        <h5>2. THE COMPUTER</h5>
+        <p><strong>Keyword:</strong> <code>Literal</code></p>
+        <p>The computer follows instructions exactly. It cannot guess intent or understand ambiguity. This demands <strong>precision</strong> from the programmer.</p>
+        <hr>
+
+        <h5>3. THE PLAN</h5>
+        <p><strong>Keyword:</strong> <code>Algorithm</code></p>
+        <p>The step-by-step plan of instructions you create for the computer to follow. The order of these steps (the <strong>sequence</strong>) is critical.</p>
+        <hr>
+
+        <h5>4. THE LANGUAGE</h5>
+        <p><strong>Keyword:</strong> <code>Syntax</code></p>
+        <p>The strict grammar and punctuation rules of the programming language. If the syntax is wrong, the computer cannot understand the instruction.</p>
+      `,
+      code: null,
+      mindMap: {
+        center: 'Programming',
+        nodes: [
+          { title: 'The Act', keyword: 'Instruction' },
+          { title: 'The Tool', keyword: 'Computer (Literal)' },
+          { title: 'The Plan', keyword: 'Algorithm (Sequence)' },
+          { title: 'The Rules', keyword: 'Syntax (Grammar)' },
+        ]
+      }
+    },
+    {
       id: 'vars',
       title: 'Variables & Data Types',
       icon: 'fa-cube',
