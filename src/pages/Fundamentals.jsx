@@ -24,11 +24,21 @@ const MindMap = ({ data }) => {
         setExpandedNodes(newExpandedNodes);
     };
 
-    // Positions for the nodes around the center (in percentages)
-    const nodePositions = [
-        { x: 25, y: 20 }, { x: 75, y: 20 },
-        { x: 75, y: 80 }, { x: 25, y: 80 },
-    ];
+    const numNodes = data.nodes.length;
+    let nodePositions;
+
+    // Adjust layout based on the number of nodes for a balanced look
+    if (numNodes === 2) {
+        nodePositions = [
+            { x: 20, y: 50 }, { x: 80, y: 50 }
+        ];
+    } else { // Default to 4-node layout
+        nodePositions = [
+            { x: 25, y: 20 }, { x: 75, y: 20 },
+            { x: 75, y: 80 }, { x: 25, y: 80 },
+        ];
+    }
+    
     const centerPos = { x: 50, y: 50 };
 
     return (
