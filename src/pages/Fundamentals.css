@@ -350,7 +350,7 @@
     background-color: var(--bg-hover);
 }
 
-/* NEW: Two-column layout for content */
+/* Two-column layout for content */
 .two-column-layout {
   display: flex;
   gap: 2rem;
@@ -362,7 +362,19 @@
   min-width: 0;
 }
 
-/* NEW: Responsive Styles for Tablet and Mobile */
+/* NEW: Three-column layout for content */
+.three-column-layout {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.three-column-layout .column {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive Styles for Tablet and Mobile */
 @media (max-width: 992px) {
     .topic-page-container {
         flex-direction: column;
@@ -373,7 +385,8 @@
         flex-basis: auto; /* Allow sidebar to take its natural height */
     }
 
-    .two-column-layout {
+    .two-column-layout,
+    .three-column-layout {
         flex-direction: column;
     }
 

@@ -106,6 +106,56 @@ if (isLoggedIn === true) {
       }
     },
     {
+      id: 'intro-js',
+      title: 'Introducing JavaScript',
+      icon: 'fa-magic',
+      content: `
+        <h4>Core Concept: JavaScript Brings Websites to Life</h4>
+        <p>While other technologies build a website's structure and apply style, JavaScript provides the "brains" and interactivity. The relationship is best understood with an analogy:</p>
+        <div class="three-column-layout">
+          <div class="column">
+            <h5>1. STRUCTURE</h5>
+            <p><strong>Keyword:</strong> <code>HTML</code></p>
+            <p>HTML (HyperText Markup Language) is the <strong>skeleton</strong> of a website. It defines the core elements, like headings, paragraphs, and images.</p>
+            <p><strong>Example:</strong> An HTML tag <code>&lt;h1&gt;My Website&lt;/h1&gt;</code> creates a main heading.</p>
+          </div>
+          <div class="column">
+            <h5>2. STYLE</h5>
+            <p><strong>Keyword:</strong> <code>CSS</code></p>
+            <p>CSS (Cascading Style Sheets) is the <strong>decoration</strong>. It styles the HTML, controlling colors, fonts, and layout.</p>
+            <p><strong>Example:</strong> A CSS rule <code>h1 { color: blue; }</code> would turn that main heading blue.</p>
+          </div>
+          <div class="column">
+            <h5>3. INTERACTIVITY</h5>
+            <p><strong>Keyword:</strong> <code>JavaScript</code></p>
+            <p>JavaScript is the <strong>nervous system</strong>. It makes the website functional and allows it to react to user actions.</p>
+            <p><strong>Example:</strong> JavaScript can make a button clickable, so when a user clicks it, a pop-up message appears.</p>
+          </div>
+        </div>
+      `,
+      code: null,
+      mindMap: {
+        center: 'A Website',
+        nodes: [
+          { 
+            title: 'The Skeleton', 
+            keyword: 'HTML',
+            description: 'Provides the core structure and elements of the page.'
+          },
+          { 
+            title: 'The Decoration', 
+            keyword: 'CSS',
+            description: 'Styles the structure with colors, fonts, and layouts.'
+          },
+          { 
+            title: 'The Brains', 
+            keyword: 'JavaScript',
+            description: 'Adds interactivity and makes the website dynamic.'
+          },
+        ]
+      }
+    },
+    {
       id: 'conceptual-summary',
       title: 'Conceptual Summary',
       icon: 'fa-table',
@@ -244,4 +294,3 @@ const myDog = new Dog('Rex');
     }
   ]
 };
-

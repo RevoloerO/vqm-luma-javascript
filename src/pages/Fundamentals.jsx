@@ -32,6 +32,12 @@ const MindMap = ({ data }) => {
         nodePositions = [
             { x: 20, y: 50 }, { x: 80, y: 50 }
         ];
+    } else if (numNodes === 3) {
+        nodePositions = [
+            { x: 50, y: 15 }, // Top
+            { x: 20, y: 85 }, // Bottom-left
+            { x: 80, y: 85 }, // Bottom-right
+        ];
     } else { // Default to 4-node layout
         nodePositions = [
             { x: 25, y: 20 }, { x: 75, y: 20 },
