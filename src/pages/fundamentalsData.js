@@ -182,42 +182,61 @@ export const fundamentalsData = [
       ]
     },
     {
-      id: 'vars',
-      title: 'Variables & Data Types',
-      icon: 'fa-cube',
-      content: `
-        <p>In JavaScript, a variable is a container for a value. Before you can use a variable, you need to declare it using one of three keywords: <code>var</code>, <code>let</code>, or <code>const</code>.</p>
-        <ul>
-          <li><strong>let:</strong> Declares a block-scoped, mutable variable. This is the modern standard.</li>
-          <li><strong>const:</strong> Declares a block-scoped, immutable variable. The value cannot be reassigned.</li>
-          <li><strong>var:</strong> The old way. It has function scope, not block scope, which can lead to unexpected behavior.</li>
-        </ul>
-      `,
-      code: `
-let message = "Hello, LUMA!"; // String
-const year = 2025; // Number
-let isLearning = true; // Boolean
+      id: 'part-2',
+      title: 'Part II: The Building Blocks',
+      icon: 'fa-cubes',
+      subTopics: [
+        {
+          id: 'variables-data-types',
+          title: '2.1 Variables & Data Types',
+          icon: 'fa-box',
+          content: `
+            <h4>Core Concept: Storing Information in Labeled Boxes</h4>
+            <p>Programs need to work with information. In JavaScript, we store this information in <strong>variables</strong>, which are like labeled containers. The information itself comes in different forms, known as <strong>data types</strong>.</p>
+            
+            <h5>1. THE CONTAINER</h5>
+            <p><strong>Keyword:</strong> <code>Variable</code></p>
+            <p>A named placeholder for a value. Use <code>let</code> for values that can change and <code>const</code> for values that should not. The <code>=</code> sign is for assignment, not equality. <code>let score = 100;</code> means "the variable 'score' gets the value 100."</p>
+            <p><strong>Example:</strong></p>
+            <pre><code>let playerName = "VQM";\nconst highScore = 10000;</code></pre>
+            <hr>
 
-console.log(typeof message); // "string"
-      `
-    },
-    {
-      id: 'async',
-      title: 'Async JS',
-      icon: 'fa-bolt',
-      content: `
-        <p>Asynchronous JavaScript is crucial for non-blocking operations, like fetching data from a server. The modern way to handle this is with <code>async/await</code>, which is syntactic sugar over Promises.</p>
-      `,
-      code: `
-const fetchData = async () => {
-  try {
-    const response = await fetch('https://api.example.com/data');
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error('Fetch error:', error);
-  }
-};
-      `
+            <h4>The Three Core Data Types</h4>
+            <div class="three-column-layout">
+              <div class="column">
+                <h5>2. TEXT</h5>
+                <p><strong>Keyword:</strong> <code>String</code></p>
+                <p>A sequence of text characters, always enclosed in quotes.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>let greeting = "Hello, world!";</code></pre>
+              </div>
+              <div class="column">
+                <h5>3. NUMBERS</h5>
+                <p><strong>Keyword:</strong> <code>Number</code></p>
+                <p>Represents any kind of numerical data, including decimals.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>let userAge = 25;\nlet price = 19.99;</code></pre>
+              </div>
+              <div class="column">
+                <h5>4. LOGIC</h5>
+                <p><strong>Keyword:</strong> <code>Boolean</code></p>
+                <p>Represents a logical value that can only be <code>true</code> or <code>false</code>.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>let isLoggedIn = true;</code></pre>
+              </div>
+            </div>
+          `,
+          code: null,
+          mindMap: {
+            center: 'Data Storage',
+            nodes: [
+              { title: 'The Container', keyword: 'Variable', description: 'A named container for storing information. Declared with `let` or `const`.' },
+              { title: 'Text Data', keyword: 'String', description: 'A sequence of text, like a word or sentence. Always in quotes.' },
+              { title: 'Numerical Data', keyword: 'Number', description: 'Represents all numbers, including whole numbers and decimals.' },
+              { title: 'Logical Data', keyword: 'Boolean', description: 'Represents a value that can only be `true` or `false`.' },
+            ]
+          }
+        }
+      ]
     }
 ];

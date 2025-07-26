@@ -1,6 +1,19 @@
 {
   "name": "vqm-luma-javascript",
   "homepage": "revoloero.github.io/vqm-luma-javascript",
+  "description": "A JavaScript project using Vite and React, deployed with GitHub Pages.",
+  "keywords": [
+    "javascript",
+    "react",
+    "vite",
+    "web development",
+    "github pages"
+  ],
+  "author": "Revoloero",
+  "license": "MIT",
+  "repository": {
+    "type": "git"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,6 +27,7 @@
   },
   "dependencies": {
     "gh-pages": "^6.3.0",
+    "lucide-react": "^0.526.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.0"
