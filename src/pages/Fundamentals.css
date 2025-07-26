@@ -43,6 +43,49 @@
     font-weight: 700;
 }
 
+/* NEW: Styles for Nested/Hierarchical Sidebar */
+.topic-list-item.parent-topic {
+    padding: 0;
+    cursor: default;
+}
+.topic-list-item.parent-topic:hover {
+    background-color: transparent;
+}
+.parent-topic-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+.parent-topic-title:hover {
+     background-color: var(--bg-tertiary);
+}
+.parent-topic.parent-active > .parent-topic-title {
+    font-weight: 700;
+    background-color: var(--bg-tertiary);
+}
+.expand-icon {
+    transition: transform 0.3s ease;
+}
+.parent-topic.expanded > .parent-topic-title > .expand-icon {
+    transform: rotate(-180deg);
+}
+.sub-topic-list {
+    list-style: none;
+    padding-left: 1.5rem; /* Indent sub-topics */
+    margin: 0;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+.topic-list-item.sub-topic {
+    font-size: 0.95rem;
+    padding-left: 1.5rem; /* Add extra padding for icon alignment */
+}
+
+
 .topic-content {
     flex-grow: 1;
     background-color: var(--bg-secondary);
@@ -362,7 +405,7 @@
   min-width: 0;
 }
 
-/* NEW: Three-column layout for content */
+/* Three-column layout for content */
 .three-column-layout {
   display: flex;
   gap: 2rem;
