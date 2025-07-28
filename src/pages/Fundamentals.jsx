@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { lumaData } from './data.js';
 import './Fundamentals.css';
@@ -66,18 +66,33 @@ const MindMap = ({ data }) => {
 
 export default function Fundamentals() {
     const navigate = useNavigate();
-    // Default to the first sub-topic of the first main topic if it exists
     const firstTopic = lumaData.fundamentals[0];
     const initialActiveTopic = firstTopic.subTopics ? firstTopic.subTopics[0] : firstTopic;
 
     const [activeTopic, setActiveTopic] = useState(initialActiveTopic);
     const [viewMode, setViewMode] = useState('normal');
-    // Keep track of expanded parent topics. Default the first one to be open.
     const [expandedTopics, setExpandedTopics] = useState(new Set([firstTopic.id]));
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setShowScrollTop(true);
+            } else {
+                setShowScrollTop(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Clean up the event listener when the component unmounts
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
 
     const handleTopicClick = (topic) => {
         setActiveTopic(topic);
-        setViewMode('normal'); // Reset to normal view when topic changes
+        setViewMode('normal'); 
+        window.scrollTo(0, 0); // Scroll to top when a new topic is selected
     };
 
     const handleParentTopicClick = (topicId) => {
@@ -89,48 +104,58 @@ export default function Fundamentals() {
         }
         setExpandedTopics(newExpanded);
     };
+    
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     return (
         <div className="topic-page-container">
             <aside className="topic-sidebar">
-                <button className="back-button" onClick={() => navigate('/vqm-luma-javascript/')}>
-                    <i className="fas fa-arrow-left"></i> Back to Home
-                </button>
-                <h2>Fundamentals</h2>
-                <ul className="topic-list">
-                    {lumaData.fundamentals.map(topic => (
-                        <React.Fragment key={topic.id}>
-                            {topic.subTopics ? (
-                                // This is a parent topic with sub-topics
-                                <li className={`topic-list-item parent-topic ${expandedTopics.has(topic.id) ? 'expanded' : ''} ${topic.subTopics.some(sub => sub.id === activeTopic.id) ? 'parent-active' : ''}`}>
-                                    <div className="parent-topic-title" onClick={() => handleParentTopicClick(topic.id)}>
-                                        <span>
-                                            <i className={`fas ${topic.icon}`} style={{ marginRight: '10px', width: '20px' }}></i>
-                                            {topic.title}
-                                        </span>
-                                        <i className="fas fa-chevron-down expand-icon"></i>
+                <div className="sidebar-header">
+                    <button className="back-button" onClick={() => navigate('/vqm-luma-javascript/')}>
+                        <i className="fas fa-arrow-left"></i> Back to Home
+                    </button>
+                    <h2>Fundamentals</h2>
+                </div>
+                <nav className="topic-nav">
+                    <ul className="topic-list">
+                        {lumaData.fundamentals.map(topic => (
+                            <li key={topic.id} className={`topic-list-item-wrapper ${topic.subTopics ? 'has-sub-topics' : ''}`}>
+                                {topic.subTopics ? (
+                                    <>
+                                        <div 
+                                            className={`parent-topic ${expandedTopics.has(topic.id) ? 'expanded' : ''} ${topic.subTopics.some(sub => sub.id === activeTopic.id) ? 'parent-active' : ''}`}
+                                            onClick={() => handleParentTopicClick(topic.id)}
+                                        >
+                                            <i className={`fas ${topic.icon}`}></i>
+                                            <span>{topic.title}</span>
+                                            <i className="fas fa-chevron-down expand-icon"></i>
+                                        </div>
+                                        {expandedTopics.has(topic.id) && (
+                                            <ul className="sub-topic-list">
+                                                {topic.subTopics.map(subTopic => (
+                                                    <li key={subTopic.id} className={`sub-topic ${activeTopic.id === subTopic.id ? 'active' : ''}`} onClick={() => handleTopicClick(subTopic)}>
+                                                        <i className={`fas ${subTopic.icon}`}></i>
+                                                        <span>{subTopic.title}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className={`topic-list-item ${activeTopic.id === topic.id ? 'active' : ''}`} onClick={() => handleTopicClick(topic)}>
+                                        <i className={`fas ${topic.icon}`}></i>
+                                        <span>{topic.title}</span>
                                     </div>
-                                    {expandedTopics.has(topic.id) && (
-                                        <ul className="sub-topic-list">
-                                            {topic.subTopics.map(subTopic => (
-                                                <li key={subTopic.id} className={`topic-list-item sub-topic ${activeTopic.id === subTopic.id ? 'active' : ''}`} onClick={() => handleTopicClick(subTopic)}>
-                                                    <i className={`fas ${subTopic.icon}`} style={{ marginRight: '10px', width: '20px' }}></i>
-                                                    {subTopic.title}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            ) : (
-                                // This is a regular, non-parent topic
-                                <li className={`topic-list-item ${activeTopic.id === topic.id ? 'active' : ''}`} onClick={() => handleTopicClick(topic)}>
-                                    <i className={`fas ${topic.icon}`} style={{ marginRight: '10px', width: '20px' }}></i>
-                                    {topic.title}
-                                </li>
-                            )}
-                        </React.Fragment>
-                    ))}
-                </ul>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </aside>
             <main className="topic-content">
                 <div className="topic-header">
@@ -149,6 +174,11 @@ export default function Fundamentals() {
                     </>
                 )}
             </main>
+            {showScrollTop && (
+                <button onClick={scrollToTop} className="scroll-to-top-button">
+                    <i className="fas fa-arrow-up"></i>
+                </button>
+            )}
         </div>
     );
 }
