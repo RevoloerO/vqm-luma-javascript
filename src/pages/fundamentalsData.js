@@ -10,6 +10,5 @@ import { part4Data } from './part4Data.js';
 export const fundamentalsData = [
   part1Data,
   part2Data,
-  part3Data,
-  part4Data
+  part3Data
 ];

@@ -4,23 +4,23 @@
     animation: fadeIn 0.5s ease-in-out;
 }
 
-.exercises-content {
+.exercises-header {
     text-align: center;
-    background-color: var(--bg-secondary);
-    padding: 4rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+    margin-bottom: 3rem;
 }
 
-.exercises-content h2 {
+.exercises-header h2 {
     font-size: 2.5rem;
     color: var(--accent-color);
     margin-top: 0;
+    margin-bottom: 0.5rem;
 }
 
-.exercises-content p {
-    font-size: 1.2rem;
+.exercises-header p {
+    font-size: 1.1rem;
     color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .back-button {
@@ -38,4 +38,198 @@
 
 .back-button:hover {
     background-color: var(--bg-hover);
+}
+
+/* Accordion Styles */
+.accordion {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.accordion-section {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.accordion-section:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.2s ease;
+}
+
+.accordion-header:hover {
+    background-color: var(--bg-hover);
+}
+
+.accordion-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.accordion-header i {
+    transition: transform 0.3s ease;
+}
+
+.accordion-header i.expanded {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 1.5rem;
+    background-color: var(--bg-tertiary);
+    animation: fadeIn 0.4s ease;
+}
+
+.section-description {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.items-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr; /* Default to single column */
+}
+
+/* Use two columns for foundational exercises on larger screens */
+@media (min-width: 768px) {
+    .accordion-section:first-child .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+.exercise-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.exercise-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color);
+}
+
+.exercise-card .task-description {
+    flex-grow: 1;
+}
+
+.exercise-card p, .exercise-card ol {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.exercise-card ol {
+    padding-left: 1.25rem;
+}
+
+.exercise-card li {
+    margin-bottom: 0.5rem;
+}
+.exercise-card li:last-child {
+    margin-bottom: 0;
+}
+
+/* Interactive Solution & Hint Styles */
+.solution-container {
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.hint-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.hint-toggle-button, .solution-toggle-button {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.hint-toggle-button:hover, .solution-toggle-button:hover {
+    background-color: var(--bg-hover);
+    border-color: #c5c5c5;
+}
+
+.solution-toggle-button {
+    background-color: var(--accent-bg-light);
+    color: var(--accent-color);
+    border-color: transparent;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.solution-toggle-button:hover {
+    background-color: #e9d8fd;
+}
+
+.hint-content {
+    background-color: var(--bg-secondary);
+    border-left: 3px solid var(--accent-color);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0 4px 4px 0;
+    animation: fadeIn 0.5s ease;
+}
+
+.hint-content p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.solution-code {
+    margin-top: 1rem;
+    background-color: var(--bg-code);
+    border-radius: 8px;
+    padding: 1rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.solution-explanation {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.solution-code pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.solution-code code {
+    color: var(--text-code);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
 }
