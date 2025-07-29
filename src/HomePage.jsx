@@ -12,9 +12,12 @@ export default function HomePage({ toggleTheme, theme }) {
             </button>
             <div className="home-container">
                 <header className="home-header">
-                    <img src={lumaLogo} alt="LUMA Logo" style={{ width: '100px', height: 'auto', marginBottom: '1rem' }} />
-                    <h1>LUMA</h1>
-                    <p>Learn, Uncover, Master, Archive</p>
+                    {/* The logo is now centered above the main title */}
+                    <div className="logo-container">
+                        <img src={lumaLogo} alt="LUMA Logo" className="luma-logo" />
+                    </div>
+                    <h1 className="main-title">LUMA</h1>
+                    <p className="subtitle">Learn, Uncover, Master, Archive</p>
                 </header>
                 <div className="nav-cards">
                     <div className="nav-card" onClick={() => navigate('/vqm-luma-javascript/fundamentals')}>
