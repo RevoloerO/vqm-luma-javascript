@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// import './HomePage.css'; // This line has been removed
+import lumaLogo from '/src/assets/LUMA-logo.png'; // Import the logo
 
 export default function HomePage({ toggleTheme, theme }) {
     const navigate = useNavigate();
@@ -12,6 +12,7 @@ export default function HomePage({ toggleTheme, theme }) {
             </button>
             <div className="home-container">
                 <header className="home-header">
+                    <img src={lumaLogo} alt="LUMA Logo" style={{ width: '100px', height: 'auto', marginBottom: '1rem' }} />
                     <h1>LUMA</h1>
                     <p>Learn, Uncover, Master, Archive</p>
                 </header>
