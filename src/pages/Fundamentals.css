@@ -5,6 +5,31 @@
     max-width: 1200px;
     margin: 0 auto;
     animation: fadeIn 0.5s ease-in-out;
+    position: relative;
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 45px;
+    height: 45px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* NEW: Modern Sidebar Styles */
@@ -24,7 +49,44 @@
     font-weight: 600;
     color: var(--text-primary);
     margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Progress Indicator Styles */
+.progress-indicator {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-hover);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), #6941C6);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-percentage {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-align: right;
 }
 
 .back-button {
@@ -65,13 +127,21 @@
 .topic-list-item, .parent-topic, .sub-topic {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
     font-weight: 500;
     color: var(--text-secondary);
+}
+
+.topic-item-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    cursor: pointer;
 }
 
 .topic-list-item:hover, .parent-topic:hover, .sub-topic:hover {
@@ -116,6 +186,49 @@
 .topic-list-item i, .parent-topic i, .sub-topic i {
     width: 16px;
     text-align: center;
+}
+
+/* Topic Actions (Bookmark + Checkbox) */
+.topic-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Bookmark Button */
+.bookmark-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-button:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.bookmark-button .fas.fa-bookmark {
+    color: var(--accent-color);
+}
+
+/* Checkbox Styles */
+.topic-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+.topic-checkbox:hover {
+    transform: scale(1.1);
 }
 
 /* --- End of New Sidebar Styles --- */
@@ -294,6 +407,7 @@
     text-align: center;
     opacity: 0;
     animation: elegantFadeIn 0.7s ease-out forwards;
+    transform: translate(-50%, -50%);
 }
 
 .mind-map-node:nth-of-type(1) { animation-delay: 0.4s; }
@@ -302,7 +416,7 @@
 .mind-map-node:nth-of-type(4) { animation-delay: 1.0s; }
 
 .mind-map-node:hover {
-    transform: translate(-50%, -52%);
+    transform: translate(-50%, -50%) scale(1.02);
     box-shadow: 0 12px 28px rgba(149, 157, 165, 0.2);
 }
 
@@ -454,13 +568,42 @@
 }
 
 @media (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .topic-page-container {
         flex-direction: column;
-        padding: 1rem; 
+        padding: 1rem;
     }
 
     .topic-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        background-color: var(--bg-primary);
+        z-index: 1000;
+        transition: left 0.3s ease;
+        overflow-y: auto;
         flex-basis: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        padding-top: 1rem;
+    }
+
+    .topic-sidebar.sidebar-open {
+        left: 0;
+    }
+
+    .sidebar-header {
+        position: sticky;
+        top: 0;
+        background-color: var(--bg-primary);
+        z-index: 10;
+        padding-bottom: 1rem;
     }
 
     .two-column-layout,
@@ -472,6 +615,10 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+
+    .topic-content {
+        margin-top: 3.5rem;
     }
 }
 
@@ -510,23 +657,39 @@
 
 @media (max-width: 480px) {
     .mind-map-view {
-        height: 550px; 
+        height: 650px;
     }
 
     .mind-map-node {
-        width: 140px;
-        padding: 0.8rem;
+        width: 130px;
+        padding: 0.75rem;
     }
 
     .mind-map-node .node-title {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .mind-map-node .node-keyword code {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        padding: 0.25rem 0.4rem;
     }
 
     .node-description {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+    }
+
+    .mind-map-center-node {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .node-toggle-button {
+        width: 24px;
+        height: 24px;
+        font-size: 0.75rem;
+    }
+
+    .mind-map-node.expanded .node-description-container {
+        max-height: 150px;
     }
 }

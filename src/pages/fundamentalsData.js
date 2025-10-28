@@ -5,7 +5,6 @@
 import { part1Data } from './part1Data.js';
 import { part2Data } from './part2Data.js';
 import { part3Data } from './part3Data.js';
-import { part4Data } from './part4Data.js';
 
 export const fundamentalsData = [
   part1Data,

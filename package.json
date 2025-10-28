@@ -26,6 +26,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fuse.js": "^7.1.0",
     "gh-pages": "^6.3.0",
     "lucide-react": "^0.526.0",
     "react": "^19.1.0",
