@@ -1,12 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './HomePage';
-import Fundamentals from './pages/Fundamentals';
-import Advanced from './pages/Advanced';
-import Exercises from './pages/Exercises';
-import Bookmarks from './pages/Bookmarks';
 import SearchBar from './components/SearchBar';
 import './App.css'; // Import global styles and themes
+
+// Lazy load route components for better performance
+const HomePage = lazy(() => import('./HomePage'));
+const Fundamentals = lazy(() => import('./pages/Fundamentals'));
+const Advanced = lazy(() => import('./pages/Advanced'));
+const Exercises = lazy(() => import('./pages/Exercises'));
+const Bookmarks = lazy(() => import('./pages/Bookmarks'));
+
+// Loading component
+const LoadingFallback = () => (
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    fontSize: '1.5rem',
+    color: 'var(--text-secondary)'
+  }}>
+    <i className="fas fa-spinner fa-spin" style={{ marginRight: '1rem' }}></i>
+    Loading...
+  </div>
+);
 
 export default function App() {
   const [theme, setTheme] = useState('light');
@@ -21,16 +38,17 @@ export default function App() {
   };
 
   return (
-    // The data-theme attribute is no longer needed here
     <div className="luma-app">
       <SearchBar />
-      <Routes>
-        <Route path="/vqm-luma-javascript/" element={<HomePage toggleTheme={toggleTheme} theme={theme} />} />
-        <Route path="/vqm-luma-javascript/fundamentals" element={<Fundamentals theme={theme} />} />
-        <Route path="/vqm-luma-javascript/advanced" element={<Advanced theme={theme} />} />
-        <Route path="/vqm-luma-javascript/exercises" element={<Exercises theme={theme} />} />
-        <Route path="/vqm-luma-javascript/bookmarks" element={<Bookmarks theme={theme} />} />
-      </Routes>
-    </div >
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/vqm-luma-javascript/" element={<HomePage toggleTheme={toggleTheme} theme={theme} />} />
+          <Route path="/vqm-luma-javascript/fundamentals" element={<Fundamentals theme={theme} />} />
+          <Route path="/vqm-luma-javascript/advanced" element={<Advanced theme={theme} />} />
+          <Route path="/vqm-luma-javascript/exercises" element={<Exercises theme={theme} />} />
+          <Route path="/vqm-luma-javascript/bookmarks" element={<Bookmarks theme={theme} />} />
+        </Routes>
+      </Suspense>
+    </div>
   )
 }

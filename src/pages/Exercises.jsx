@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CodeBlock from '../components/CodeBlock';
+import CodePlayground from '../components/CodePlayground';
 import './Exercises.css';
 
 const exercisesData = [
@@ -80,22 +82,30 @@ const exercisesData = [
     }
 ];
 
-export default function Exercises() {
+export default function Exercises({ theme }) {
     const navigate = useNavigate();
     const [openSection, setOpenSection] = useState(exercisesData[0].id);
     const [visibleHints, setVisibleHints] = useState({});
+    const [showPlayground, setShowPlayground] = useState({});
 
     const toggleSection = (id) => {
         setOpenSection(openSection === id ? null : id);
     };
 
     const toggleHint = (id, hintNum) => {
-        setVisibleHints(prev => ({ 
-            ...prev, 
+        setVisibleHints(prev => ({
+            ...prev,
             [id]: {
                 ...prev[id],
-                [hintNum]: !prev[id]?.[hintNum] 
+                [hintNum]: !prev[id]?.[hintNum]
             }
+        }));
+    };
+
+    const togglePlayground = (id) => {
+        setShowPlayground(prev => ({
+            ...prev,
+            [id]: !prev[id]
         }));
     };
 
@@ -131,6 +141,21 @@ export default function Exercises() {
                                                 </ol>
                                             )}
                                             {item.solution && (
+                                                <button
+                                                    onClick={() => togglePlayground(item.id)}
+                                                    className="playground-toggle-button"
+                                                >
+                                                    <i className={`fas ${showPlayground[item.id] ? 'fa-times' : 'fa-code'}`}></i>
+                                                    {showPlayground[item.id] ? 'Hide Code Editor' : 'Try it Yourself'}
+                                                </button>
+                                            )}
+                                            {showPlayground[item.id] && item.solution && (
+                                                <CodePlayground
+                                                    initialCode={`// ${item.title}\n// Task: ${item.task}\n\n`}
+                                                    theme={theme}
+                                                />
+                                            )}
+                                            {item.solution && (
                                                 <div className="solution-container">
                                                     <div className="hint-buttons">
                                                         <button onClick={() => toggleHint(item.id, 1)} className="hint-toggle-button">
@@ -163,7 +188,7 @@ export default function Exercises() {
                                                     {visibleHints[item.id]?.solution && (
                                                         <div className="solution-code">
                                                             <p className="solution-explanation">{item.solution.explanation}</p>
-                                                            <pre><code>{item.solution.code}</code></pre>
+                                                            <CodeBlock code={item.solution.code} language="javascript" theme={theme} />
                                                         </div>
                                                     )}
                                                 </div>

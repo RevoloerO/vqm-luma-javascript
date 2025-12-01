@@ -3,14 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { lumaData } from './data.js';
 import { useProgress } from '../contexts/ProgressContext.jsx';
 import { useBookmarks } from '../contexts/BookmarkContext.jsx';
+import CodeBlock from '../components/CodeBlock';
 import './Fundamentals.css';
-
-// Reusable CodeBlock component
-const CodeBlock = ({ code }) => (
-    <div className="code-block">
-        <pre><code>{code.trim()}</code></pre>
-    </div>
-);
 
 // MindMap component for visualization
 const MindMap = ({ data }) => {
@@ -66,7 +60,7 @@ const MindMap = ({ data }) => {
 };
 
 
-export default function Fundamentals() {
+export default function Fundamentals({ theme }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isTopicComplete, markTopicComplete, getCompletionStats } = useProgress();
@@ -280,7 +274,7 @@ export default function Fundamentals() {
                 {viewMode === 'mindmap' && activeTopic.mindMap ? <MindMap data={activeTopic.mindMap} /> : (
                     <>
                         <div dangerouslySetInnerHTML={{ __html: activeTopic.content }} />
-                        {activeTopic.code && <CodeBlock code={activeTopic.code} />}
+                        {activeTopic.code && <CodeBlock code={activeTopic.code} theme={theme} />}
                     </>
                 )}
             </main>

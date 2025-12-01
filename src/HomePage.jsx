@@ -4,6 +4,7 @@ import { useProgress } from './contexts/ProgressContext.jsx';
 import { useBookmarks } from './contexts/BookmarkContext.jsx';
 import { lumaData } from './pages/data.js';
 import { advancedData } from './pages/advancedData.js';
+import StatsPanel from './components/StatsPanel';
 import lumaLogo from '/src/assets/LUMA-logo.png'; // Import the logo
 
 export default function HomePage({ toggleTheme, theme }) {
@@ -50,6 +51,10 @@ export default function HomePage({ toggleTheme, theme }) {
                     <h1 className="main-title">LUMA</h1>
                     <p className="subtitle">Learn, Uncover, Master, Archive</p>
                 </header>
+
+                {/* Stats Panel */}
+                <StatsPanel />
+
                 <div className="nav-cards">
                     <div className="nav-card" onClick={() => navigate('/vqm-luma-javascript/fundamentals')}>
                         {fundamentalsStats.percentage === 100 && (

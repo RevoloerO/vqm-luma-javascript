@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { lumaData } from '../pages/data.js';
 import { advancedData } from '../pages/advancedData.js';
 import './SearchBar.css';
 
-// Build search index from all content
+// Build search index from all content (memoized outside component to run once)
 const buildSearchIndex = () => {
     const items = [];
 
@@ -75,38 +75,70 @@ const SearchBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [filter, setFilter] = useState('all'); // 'all', 'fundamentals', 'advanced'
     const navigate = useNavigate();
     const inputRef = useRef(null);
     const searchRef = useRef(null);
+    const resultRefs = useRef([]);
 
-    // Initialize Fuse
-    const fuseRef = useRef(null);
-    useEffect(() => {
+    // Initialize Fuse with useMemo for better performance
+    const fuse = useMemo(() => {
         const searchIndex = buildSearchIndex();
-        fuseRef.current = new Fuse(searchIndex, {
+        return new Fuse(searchIndex, {
             keys: ['title', 'content', 'code'],
             threshold: 0.3,
             includeScore: true,
             minMatchCharLength: 2
         });
-    }, []);
+    }, []); // Empty deps means this only runs once
 
-    // Keyboard shortcut (Ctrl/Cmd + K)
+    // Keyboard shortcuts and navigation
     useEffect(() => {
         const handleKeyDown = (e) => {
+            // Open search (Ctrl/Cmd + K)
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault();
                 setIsOpen(true);
+                return;
             }
+
+            if (!isOpen) return;
+
+            // Close search (Escape)
             if (e.key === 'Escape') {
                 setIsOpen(false);
                 setQuery('');
+                setSelectedIndex(0);
+                return;
+            }
+
+            // Navigate results with arrow keys
+            if (results.length > 0) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setSelectedIndex(prev => {
+                        const newIndex = Math.min(prev + 1, results.length - 1);
+                        resultRefs.current[newIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                        return newIndex;
+                    });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    setSelectedIndex(prev => {
+                        const newIndex = Math.max(prev - 1, 0);
+                        resultRefs.current[newIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                        return newIndex;
+                    });
+                } else if (e.key === 'Enter' && results[selectedIndex]) {
+                    e.preventDefault();
+                    handleResultClick(results[selectedIndex].item);
+                }
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
+    }, [isOpen, results, selectedIndex]);
 
     // Focus input when opened
     useEffect(() => {
@@ -129,31 +161,59 @@ const SearchBar = () => {
         }
     }, [isOpen]);
 
-    // Search handler
-    const handleSearch = (value) => {
+    // Search handler (memoized with filter support)
+    const handleSearch = useCallback((value) => {
         setQuery(value);
-        if (value.trim().length >= 2 && fuseRef.current) {
-            const searchResults = fuseRef.current.search(value);
+        setSelectedIndex(0); // Reset selected index on new search
+        if (value.trim().length >= 2 && fuse) {
+            let searchResults = fuse.search(value);
+
+            // Apply filter
+            if (filter !== 'all') {
+                searchResults = searchResults.filter(result =>
+                    result.item.section.toLowerCase() === filter
+                );
+            }
+
             setResults(searchResults.slice(0, 8)); // Limit to 8 results
         } else {
             setResults([]);
         }
-    };
+    }, [fuse, filter]);
 
-    // Navigate to result
-    const handleResultClick = (item) => {
+    // Navigate to result (memoized)
+    const handleResultClick = useCallback((item) => {
         navigate(item.route, { state: { topicId: item.id } });
         setIsOpen(false);
         setQuery('');
         setResults([]);
-    };
+        setSelectedIndex(0);
+        setFilter('all');
+    }, [navigate]);
 
-    // Highlight matching text
+    // Filter change handler
+    const handleFilterChange = useCallback((newFilter) => {
+        setFilter(newFilter);
+        setSelectedIndex(0);
+        // Re-run search with new filter
+        if (query.trim().length >= 2 && fuse) {
+            let searchResults = fuse.search(query);
+            if (newFilter !== 'all') {
+                searchResults = searchResults.filter(result =>
+                    result.item.section.toLowerCase() === newFilter
+                );
+            }
+            setResults(searchResults.slice(0, 8));
+        }
+    }, [query, fuse]);
+
+    // Highlight matching text (improved to highlight all occurrences)
     const highlightText = (text, query) => {
         if (!query) return text;
-        const parts = text.split(new RegExp(`(${query})`, 'gi'));
+        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        const parts = text.split(regex);
         return parts.map((part, i) =>
-            part.toLowerCase() === query.toLowerCase() ? (
+            regex.test(part) ? (
                 <mark key={i}>{part}</mark>
             ) : (
                 part
@@ -196,13 +256,37 @@ const SearchBar = () => {
                             </button>
                         </div>
 
+                        {/* Filter buttons */}
+                        <div className="search-filters">
+                            <button
+                                className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
+                                onClick={() => handleFilterChange('all')}
+                            >
+                                All
+                            </button>
+                            <button
+                                className={`filter-btn ${filter === 'fundamentals' ? 'active' : ''}`}
+                                onClick={() => handleFilterChange('fundamentals')}
+                            >
+                                <i className="fas fa-book"></i> Fundamentals
+                            </button>
+                            <button
+                                className={`filter-btn ${filter === 'advanced' ? 'active' : ''}`}
+                                onClick={() => handleFilterChange('advanced')}
+                            >
+                                <i className="fas fa-brain"></i> Advanced
+                            </button>
+                        </div>
+
                         {results.length > 0 && (
                             <div className="search-results">
-                                {results.map(({ item }) => (
+                                {results.map(({ item }, index) => (
                                     <div
                                         key={item.id}
-                                        className="search-result-item"
+                                        ref={el => resultRefs.current[index] = el}
+                                        className={`search-result-item ${index === selectedIndex ? 'selected' : ''}`}
                                         onClick={() => handleResultClick(item)}
+                                        onMouseEnter={() => setSelectedIndex(index)}
                                     >
                                         <div className="result-header">
                                             <span className="result-title">
@@ -216,7 +300,7 @@ const SearchBar = () => {
                                             </div>
                                         )}
                                         <div className="result-preview">
-                                            {item.content.substring(0, 120)}...
+                                            {highlightText(item.content.substring(0, 120), query)}...
                                         </div>
                                     </div>
                                 ))}
@@ -227,6 +311,11 @@ const SearchBar = () => {
                             <div className="search-no-results">
                                 <i className="fas fa-search"></i>
                                 <p>No results found for "{query}"</p>
+                                {filter !== 'all' && (
+                                    <button onClick={() => handleFilterChange('all')} className="clear-filter-btn">
+                                        Clear filter and search all
+                                    </button>
+                                )}
                             </div>
                         )}
 
@@ -234,6 +323,12 @@ const SearchBar = () => {
                             <div className="search-help">
                                 <div className="search-help-item">
                                     <kbd>Ctrl</kbd> + <kbd>K</kbd> to open search
+                                </div>
+                                <div className="search-help-item">
+                                    <kbd>↑</kbd> <kbd>↓</kbd> to navigate
+                                </div>
+                                <div className="search-help-item">
+                                    <kbd>Enter</kbd> to select
                                 </div>
                                 <div className="search-help-item">
                                     <kbd>Esc</kbd> to close

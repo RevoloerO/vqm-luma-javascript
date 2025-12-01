@@ -3,16 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { advancedData } from './advancedData.js';
 import { useProgress } from '../contexts/ProgressContext.jsx';
 import { useBookmarks } from '../contexts/BookmarkContext.jsx';
+import CodeBlock from '../components/CodeBlock';
 import './Advanced.css';
 
-// Reusable components
-const CodeBlock = ({ code }) => (
-    <div className="code-block">
-        <pre><code>{code.trim()}</code></pre>
-    </div>
-);
-
-export default function Advanced() {
+export default function Advanced({ theme }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isTopicComplete, markTopicComplete, getCompletionStats } = useProgress();
@@ -192,7 +186,7 @@ export default function Advanced() {
             <main className="topic-content">
                 <h3>{activeTopic.title}</h3>
                 <div dangerouslySetInnerHTML={{ __html: activeTopic.content }} />
-                {activeTopic.code && <CodeBlock code={activeTopic.code} />}
+                {activeTopic.code && <CodeBlock code={activeTopic.code} theme={theme} />}
             </main>
         </div>
     );

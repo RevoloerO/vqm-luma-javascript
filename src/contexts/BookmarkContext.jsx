@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 
 const BookmarkContext = createContext();
 
@@ -31,7 +31,7 @@ export const BookmarkProvider = ({ children }) => {
         saveBookmarks(bookmarks);
     }, [bookmarks]);
 
-    const toggleBookmark = (topicId, topicData) => {
+    const toggleBookmark = useCallback((topicId, topicData) => {
         setBookmarks(prev => {
             const newBookmarks = { ...prev };
             if (newBookmarks[topicId]) {
@@ -49,35 +49,35 @@ export const BookmarkProvider = ({ children }) => {
             }
             return newBookmarks;
         });
-    };
+    }, []);
 
-    const isBookmarked = (topicId) => {
+    const isBookmarked = useCallback((topicId) => {
         return !!bookmarks[topicId];
-    };
+    }, [bookmarks]);
 
-    const getBookmarks = () => {
+    const getBookmarks = useCallback(() => {
         return Object.entries(bookmarks).map(([id, data]) => ({
             id,
             ...data
         }));
-    };
+    }, [bookmarks]);
 
-    const getBookmarkCount = () => {
+    const getBookmarkCount = useCallback(() => {
         return Object.keys(bookmarks).length;
-    };
+    }, [bookmarks]);
 
-    const clearBookmarks = () => {
+    const clearBookmarks = useCallback(() => {
         setBookmarks({});
-    };
+    }, []);
 
-    const value = {
+    const value = useMemo(() => ({
         bookmarks,
         toggleBookmark,
         isBookmarked,
         getBookmarks,
         getBookmarkCount,
         clearBookmarks
-    };
+    }), [bookmarks, toggleBookmark, isBookmarked, getBookmarks, getBookmarkCount, clearBookmarks]);
 
     return (
         <BookmarkContext.Provider value={value}>
