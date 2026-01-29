@@ -216,39 +216,191 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Mobile Responsiveness */
+/* ============================================
+   SEARCHBAR MOBILE RESPONSIVENESS
+   ============================================ */
+
+/* Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 @media (max-width: 768px) {
     .search-trigger {
-        top: 1rem;
-        left: 1rem;
-        padding: 0.6rem 1rem;
+        top: calc(0.75rem + var(--safe-area-inset-top, 0px));
+        left: calc(0.75rem + var(--safe-area-inset-left, 0px));
+        padding: 0.65rem 0.9rem;
+        /* Ensure minimum 48px touch target */
+        min-height: 48px;
+        min-width: 48px;
+        justify-content: center;
     }
 
     .search-hint {
         display: none;
     }
 
+    .search-overlay {
+        padding-top: calc(5vh + var(--safe-area-inset-top, 0px));
+        padding-left: var(--safe-area-inset-left, 0px);
+        padding-right: var(--safe-area-inset-right, 0px);
+    }
+
     .search-modal {
         width: 95%;
+        max-width: none;
         margin: 0 auto;
+        max-height: calc(85vh - var(--safe-area-inset-top, 0px));
+        display: flex;
+        flex-direction: column;
     }
 
     .search-input-container {
         padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .search-input {
+        font-size: 1rem;
+        /* Prevent zoom on iOS */
+        font-size: 16px;
+    }
+
+    /* Larger close button for touch */
+    .search-close {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .search-help {
         flex-direction: column;
         gap: 0.75rem;
+        padding: 1rem;
     }
 
     .search-results {
-        max-height: 300px;
+        max-height: 50vh;
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .search-result-item {
+        padding: 1rem;
+        /* Ensure touch-friendly height */
+        min-height: 60px;
     }
 
     .result-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+    }
+
+    .result-title {
+        font-size: 0.95rem;
+    }
+
+    .result-preview {
+        font-size: 0.85rem;
+        /* Limit preview lines */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .search-no-results {
+        padding: 2rem 1rem;
+    }
+
+    .search-no-results i {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-trigger {
+        padding: 0.5rem;
+        width: 48px;
+        height: 48px;
+    }
+
+    .search-trigger i {
+        font-size: 1.1rem;
+    }
+
+    .search-modal {
+        width: 100%;
+        border-radius: 0;
+        max-height: 100vh;
+        max-height: 100dvh;
+        height: auto;
+    }
+
+    .search-overlay {
+        padding-top: 0;
+        align-items: flex-start;
+    }
+
+    .search-input-container {
+        padding: 0.875rem;
+    }
+
+    .search-result-item {
+        padding: 0.875rem;
+    }
+
+    .result-title {
+        font-size: 0.9rem;
+    }
+
+    .result-breadcrumb {
+        font-size: 0.8rem;
+    }
+
+    .search-help kbd {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .search-trigger:hover {
+        background-color: var(--bg-secondary);
+        border-color: var(--border-color);
+    }
+
+    .search-trigger:active {
+        background-color: var(--bg-hover);
+        transform: scale(0.98);
+    }
+
+    .search-result-item:hover {
+        background-color: transparent;
+    }
+
+    .search-result-item:active {
+        background-color: var(--bg-hover);
+    }
+
+    .search-close:hover {
+        background-color: transparent;
+    }
+
+    .search-close:active {
+        background-color: var(--bg-hover);
     }
 }

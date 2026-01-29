@@ -208,14 +208,29 @@
     color: var(--text-secondary);
 }
 
-/* Mobile Responsiveness */
+/* ============================================
+   BOOKMARKS MOBILE RESPONSIVENESS
+   ============================================ */
+
 @media (max-width: 768px) {
     .bookmarks-page {
         padding: 1rem;
+        padding-top: calc(1rem + var(--safe-area-inset-top, 0px));
+        padding-bottom: calc(1rem + var(--safe-area-inset-bottom, 0px));
+    }
+
+    .bookmarks-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
     }
 
     .bookmarks-header h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+    }
+
+    .bookmarks-header h1 i {
+        font-size: 1.5rem;
     }
 
     .bookmark-grid {
@@ -223,6 +238,45 @@
         gap: 1rem;
     }
 
+    /* Bookmark cards - touch friendly */
+    .bookmark-card {
+        padding: 1.25rem;
+        min-height: 100px;
+    }
+
+    .bookmark-card-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .bookmark-title {
+        font-size: 1.05rem;
+    }
+
+    /* Larger remove button for touch */
+    .remove-bookmark {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+
+    .bookmark-breadcrumb {
+        font-size: 0.85rem;
+    }
+
+    .bookmark-footer {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .bookmark-section-badge {
+        font-size: 0.75rem;
+    }
+
+    .bookmark-date {
+        font-size: 0.8rem;
+    }
+
+    /* Empty state */
     .bookmarks-empty {
         padding: 3rem 1.5rem;
     }
@@ -233,5 +287,91 @@
 
     .bookmarks-empty h2 {
         font-size: 1.5rem;
+    }
+
+    .bookmarks-empty p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        width: 100%;
+        min-height: 48px;
+    }
+
+    /* Section titles */
+    .section-title {
+        font-size: 1.25rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .section-count {
+        font-size: 0.8rem;
+    }
+
+    .back-button {
+        min-height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bookmarks-page {
+        padding: 0.75rem;
+    }
+
+    .bookmarks-header h1 {
+        font-size: 1.5rem;
+        gap: 0.5rem;
+    }
+
+    .bookmark-card {
+        padding: 1rem;
+    }
+
+    .bookmark-title {
+        font-size: 1rem;
+    }
+
+    .bookmarks-empty {
+        padding: 2rem 1rem;
+    }
+
+    .bookmarks-empty i {
+        font-size: 2.5rem;
+    }
+
+    .bookmarks-empty h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .bookmark-card:hover {
+        transform: none;
+        box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .bookmark-card:active {
+        transform: scale(0.99);
+        box-shadow: 0 1px 4px var(--shadow-color);
+    }
+
+    .remove-bookmark:hover {
+        transform: none;
+    }
+
+    .remove-bookmark:active {
+        transform: scale(0.9);
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .cta-button:hover {
+        transform: none;
+    }
+
+    .cta-button:active {
+        transform: scale(0.98);
     }
 }

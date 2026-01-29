@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBookmarks } from '../contexts/BookmarkContext.jsx';
+import DataManagement from '../components/DataManagement.jsx';
 import './Bookmarks.css';
 
 export default function Bookmarks() {
@@ -103,6 +104,9 @@ export default function Bookmarks() {
                         ))}
                     </div>
                 )}
+
+                {/* Data Management Section */}
+                <DataManagement />
             </div>
         </div>
     );

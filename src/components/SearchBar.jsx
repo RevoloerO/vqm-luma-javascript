@@ -3,10 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { lumaData } from '../pages/data.js';
 import { advancedData } from '../pages/advancedData.js';
+import { stripHtml } from '../utils/sanitize.js';
 import './SearchBar.css';
+
+// Cache for search index to avoid rebuilding
+let cachedSearchIndex = null;
 
 // Build search index from all content
 const buildSearchIndex = () => {
+    if (cachedSearchIndex) return cachedSearchIndex;
+
     const items = [];
 
     // Add fundamentals topics
@@ -61,14 +67,8 @@ const buildSearchIndex = () => {
         }
     });
 
+    cachedSearchIndex = items;
     return items;
-};
-
-// Helper to strip HTML tags
-const stripHtml = (html) => {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
 };
 
 const SearchBar = () => {
@@ -178,21 +178,28 @@ const SearchBar = () => {
                 <div className="search-overlay">
                     <div className="search-modal" ref={searchRef}>
                         <div className="search-input-container">
-                            <i className="fas fa-search search-icon"></i>
+                            <i className="fas fa-search search-icon" aria-hidden="true"></i>
+                            <label htmlFor="search-input" className="sr-only">
+                                Search topics, content, and code
+                            </label>
                             <input
                                 ref={inputRef}
+                                id="search-input"
                                 type="text"
                                 className="search-input"
                                 placeholder="Search topics, content, and code..."
                                 value={query}
                                 onChange={(e) => handleSearch(e.target.value)}
+                                aria-label="Search topics, content, and code"
+                                aria-describedby="search-help"
+                                autoComplete="off"
                             />
                             <button
                                 onClick={() => setIsOpen(false)}
                                 className="search-close"
                                 aria-label="Close search"
                             >
-                                <i className="fas fa-times"></i>
+                                <i className="fas fa-times" aria-hidden="true"></i>
                             </button>
                         </div>
 
@@ -231,7 +238,7 @@ const SearchBar = () => {
                         )}
 
                         {query.trim().length < 2 && (
-                            <div className="search-help">
+                            <div className="search-help" id="search-help">
                                 <div className="search-help-item">
                                     <kbd>Ctrl</kbd> + <kbd>K</kbd> to open search
                                 </div>
